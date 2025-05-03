@@ -18,7 +18,7 @@ function Login() {
           <motion.div
             className="absolute w-12 h-12 rounded-full border-2 border-green-300"
             animate={{ scale: [1, 1.5, 2], opacity: [1, 0.6, 0] }}
-            transition={{ repeat: Infinity, duration: 1, ease: "easeOut" }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
           />
 
           <IoIosMic size={50} color="#A3EB1E" className="relative z-10" />
