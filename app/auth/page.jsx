@@ -24,7 +24,7 @@ function Login() {
           <TypeAnimation
             sequence={['Voxicruit']}
             wrapper="span"
-            speed={70}
+            speed={20}
             style={{ fontSize: '30px', fontWeight: 'bold', display: 'inline-block' }}
             repeat={0}
             cursor={false}
@@ -39,6 +39,8 @@ function Login() {
             height={400} 
             className='w-[400px] h-[250px]' 
           />
+          <h2 className='text-2xl font-bold text-center mt-5'>Welcome to Voxicruit</h2>
+          <p className='text-gray-500 text-center'>Sign In With Google Authentication</p>
         </div>
       </div>
     </div>
