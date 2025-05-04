@@ -57,7 +57,9 @@ function Login() {
           /> 
           <h2 className='text-2xl font-bold text-center mt-5'>Welcome to Voxicruit</h2>
           <p className='text-gray-500 text-center'>Sign In With Google Authentication</p>
-          <Button className={'mt-7 w-full'}>Login with Google</Button>
+          <Button className={'mt-7 w-full'} onClick={signInWithGoogle}>
+            Login with Google
+          </Button>
         </div>
       </div>
     </div>
