@@ -7,9 +7,23 @@ import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { supabase } from '@/services/supabaseClient';
 
 
 function Login() {
+
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+
+    if (error) {
+      console.log('Error:', error.message);
+    }
+  }
+
+
+
   return (
     <div className='flex justify-center items-center h-screen mt-10 mb-10'>
       <div className='flex flex-col items-center gap-6 border rounded-2xl p-8'>
