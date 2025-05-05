@@ -6,6 +6,9 @@ import {
     SidebarFooter,
     SidebarGroup,
     SidebarHeader,
+    SidebarMenu,
+    SidebarMenuItem,
+    SidebarMenuButton,
   } from "@/components/ui/sidebar"
 
   import { motion } from 'framer-motion';
@@ -13,6 +16,9 @@ import {
   import { TypeAnimation } from 'react-type-animation';
   import { Button } from "@/components/ui/button";
   import { Plus } from "lucide-react";
+  import { SideBarOptions } from "@/services/Constants";
+  import Link from "next/link";
+  
   
   export function AppSidebar() {
     return (
@@ -40,8 +46,23 @@ import {
         <Button className="bg-[#A3EB1E] text-black hover:bg-[#94d91b] w-full mt-5"> <Plus />Create New Interview</Button>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup />
-          <SidebarGroup />
+          <SidebarGroup>
+            <SidebarContent>
+              <SidebarMenu>
+                {SideBarOptions.map((option, index) => (
+                  <SidebarMenuItem key={index}>
+                    <SidebarMenuButton asChild>
+                      <Link href={option.path}>
+                        <option.icon />
+                        <span>{option.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarContent>
+          </SidebarGroup>
+
         </SidebarContent>
         <SidebarFooter />
       </Sidebar>
