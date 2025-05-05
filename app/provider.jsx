@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 
 function Provider({ children }) {
 
+    const [ user, setUser ] = useState();
+  
     useEffect(() => {
         CreateNewUser()
     }, [])
@@ -18,7 +20,7 @@ function Provider({ children }) {
 
             console.log(Users)
 
-            if (Users?.length === 0) {
+            if (Users?.length == 0) {
               const { data, error } = await supabase.from("Users")
                  .insert([
                     {
@@ -28,11 +30,13 @@ function Provider({ children }) {
                     }
                  ])
                  console.log(data);
+                 setUser(data);
+                 return;
             } 
+            setUser(Users);
         })
 
     }
-
 
   return (
     <div>
