@@ -9,7 +9,7 @@ function DashboardLayout({children}) {
         </DashboardProvider>
     </div>
   )
-}
+};
 
 export default DashboardLayout;
 
