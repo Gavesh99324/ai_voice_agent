@@ -33,16 +33,23 @@ function Provider({ children }) {
                  setUser(data);
                  return;
             } 
-            setUser(Users);
+            setUser(Users[0]);
         })
 
     }
 
   return (
-    <div>
+    <UserDetailContext.Provider value={{ user, setUser }}>
+     <div>
       {children}
-    </div>
+     </div>
+    </UserDetailContext.Provider>
   )
 }
 
 export default Provider;
+ 
+export const useUser = () => {
+  const context = useContext(UserDetailContext);
+  return context;
+}
