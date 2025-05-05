@@ -19,7 +19,7 @@ function Provider({ children }) {
             console.log(Users)
 
             if (Users?.length === 0) {
-                await supabase.from("Users")
+              const { data, error } = await supabase.from("Users")
                  .insert([
                     {
                         name:user?.user_metadata?.name,
@@ -27,6 +27,7 @@ function Provider({ children }) {
                         picture:user?.user_metadata?.picture
                     }
                  ])
+                 console.log(data);
             } 
         })
 
