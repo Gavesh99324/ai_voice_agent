@@ -1,55 +1,88 @@
-import { supabase } from '@/services/supabaseClient'
-import React, { useEffect, useState } from 'react'
+"use client";
+
+
+import React, { useEffect, useState, useContext } from 'react';
+import { supabase } from '@/services/supabaseClient';
+import { UserDetailContext } from '@/context/UserDetailContext';
 
 function Provider({ children }) {
+  const [user, setUser] = useState(null);
 
-    const [ user, setUser ] = useState();
-  
-    useEffect(() => {
-        CreateNewUser()
-    }, [])
+  useEffect(() => {
+    const init = async () => {
+      await createNewUser();
+    };
+    init();
+  }, []);
 
-    const CreateNewUser = () => {
+  const createNewUser = async () => {
+    try {
+      const {
+        data: { user: authUser },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-        supabase.auth.getUser().then(async({data:{user}}) => {
+      if (authError) {
+        console.error("Error getting authenticated user:", authError);
+        return;
+      }
 
-            let { data: Users, error } = await supabase
-             .from('Users')
-             .select("*")
-             .eq('email', user?.email)
+      if (!authUser) {
+        console.warn("No authenticated user found.");
+        return;
+      }
 
-            console.log(Users)
+      const { data: Users, error: fetchError } = await supabase
+        .from('Users')
+        .select("*")
+        .eq('email', authUser.email);
 
-            if (Users?.length == 0) {
-              const { data, error } = await supabase.from("Users")
-                 .insert([
-                    {
-                        name:user?.user_metadata?.name,
-                        email:user?.email,
-                        picture:user?.user_metadata?.picture
-                    }
-                 ])
-                 console.log(data);
-                 setUser(data);
-                 return;
-            } 
-            setUser(Users[0]);
-        })
+      if (fetchError) {
+        console.error("Error fetching user from DB:", fetchError);
+        return;
+      }
 
+      if (!Users || Users.length === 0) {
+        const { data: insertedData, error: insertError } = await supabase
+          .from("Users")
+          .insert([
+            {
+              name: authUser.user_metadata?.name || '',
+              email: authUser.email,
+              picture: authUser.user_metadata?.picture || '',
+            }
+          ])
+          .select();
+
+        if (insertError) {
+          console.error("Error inserting new user:", insertError);
+          return;
+        }
+
+        setUser(insertedData?.[0] || null);
+      } else {
+        setUser(Users[0]);
+      }
+    } catch (err) {
+      console.error("Unexpected error in createNewUser:", err);
     }
+  };
 
   return (
     <UserDetailContext.Provider value={{ user, setUser }}>
-     <div>
-      {children}
-     </div>
+      <div>{children}</div>
     </UserDetailContext.Provider>
-  )
+  );
 }
 
 export default Provider;
- 
+
 export const useUser = () => {
   const context = useContext(UserDetailContext);
+  if (!context) {
+    throw new Error("useUser must be used within a Provider");
+  }
   return context;
-}
+};
+
+
