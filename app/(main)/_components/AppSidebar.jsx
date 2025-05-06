@@ -18,9 +18,14 @@ import {
   import { Plus } from "lucide-react";
   import { SideBarOptions } from "@/services/Constants";
   import Link from "next/link";
+  import { usePathname } from "next/navigation";
   
   
   export function AppSidebar() {
+
+    const path = usePathname();
+
+
     return (
       <Sidebar>
         <SidebarHeader className={'flex items-center mt-5'}>
@@ -50,11 +55,11 @@ import {
             <SidebarContent>
               <SidebarMenu>
                 {SideBarOptions.map((option, index) => (
-                  <SidebarMenuItem key={index}>
-                    <SidebarMenuButton asChild>
+                  <SidebarMenuItem key={index} className={"p-1"}>
+                    <SidebarMenuButton asChild className={"p-5"}>
                       <Link href={option.path}>
-                        <option.icon />
-                        <span>{option.name}</span>
+                        <option.icon className={`${path == option.path && 'text-primary'}`} /> 
+                        <span className={`text-[16px] ${path == option.path && 'text-primary'}`}>{option.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
