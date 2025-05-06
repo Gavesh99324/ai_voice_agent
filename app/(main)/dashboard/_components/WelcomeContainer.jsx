@@ -12,10 +12,11 @@ function WelcomeContainer() {
 
   return (
     <div>
-      <div className={"p-3 rounded-2xl"} style={{ backgroundColor: 'rgba(163, 235, 30, 0.4)' }}>
+      <div className={"p-2 rounded-xl w-full"} style={{ backgroundColor: 'rgba(163, 235, 30, 0.4)' }}>
         <h2 className={"text-lg font-bold"}>Welcome Back, {user?.name || 'Guest'}</h2>
-        <h2 className={"text-secondary"}>AI-Driven Interviews, Simplified, Hustle-Free Hiring</h2>
+        <h2 className={"text-gray-500"}>AI-Driven Interviews, Simplified, Hustle-Free Hiring</h2>
       </div>
+      
     </div>
   )
 }
