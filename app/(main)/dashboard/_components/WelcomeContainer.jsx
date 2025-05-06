@@ -10,16 +10,9 @@ function WelcomeContainer() {
     console.log('user:', user);
 
 
-    /*
-     if (!user) {
-        return <div>Loading...</div>; // Show loading state until user data is available
-      }
-    */
-
-
   return (
     <div>
-      <div className={"bg-white p-3 rounded-2xl"}>
+      <div className={"p-3 rounded-2xl"} style={{ backgroundColor: 'rgba(163, 235, 30, 0.4)' }}>
         <h2 className={"text-lg font-bold"}>Welcome Back, {user?.name || 'Guest'}</h2>
         <h2 className={"text-secondary"}>AI-Driven Interviews, Simplified, Hustle-Free Hiring</h2>
       </div>
