@@ -59,7 +59,7 @@ import {
                     <SidebarMenuButton asChild className={"p-5"}>
                       <Link href={option.path}>
                         <option.icon className={`${path == option.path && 'text-primary'}`} /> 
-                        <span className={`text-[16px] font-medium ${path == option.path && 'text-primary'}`}>{option.name}</span>
+                        <span className={`text-[12px] font-medium ${path == option.path && 'text-primary'}`}>{option.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
