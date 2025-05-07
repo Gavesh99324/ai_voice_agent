@@ -8,8 +8,8 @@ import LatestInterviewsList from './_components/LatestInterviewsList';
 function Dashboard() {
 
   return (
-    <div>
-      <WelcomeContainer />
+    <div className={"mt-15"}>
+     {/* <WelcomeContainer /> */}
       <h2 className={"my-3 font-bold text-2xl"}>Dashboard</h2>
       <CreateOptions />
       <LatestInterviewsList />

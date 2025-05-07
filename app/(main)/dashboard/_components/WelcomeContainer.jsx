@@ -12,7 +12,7 @@ function WelcomeContainer() {
 
 
   return (
-    <div className={"p-2 rounded-xl w-full flex justify-between items-center"} style={{ backgroundColor: 'rgba(163, 235, 30, 0.4)' }}>
+    <div className={"p-2 rounded-xl flex justify-between items-center mt-5"} style={{ backgroundColor: 'rgba(163, 235, 30, 0.4)', position: 'fixed', left: '300px', right: '100',width: "750px" }}>
       <div>
         <h2 className={"text-medium font-bold"}>Welcome Back, {user?.name || 'Guest'}</h2>
         <h2 className={"text-gray-500 text-sm"}>AI-Driven Interviews, Simplified, Hustle-Free Hiring</h2>
