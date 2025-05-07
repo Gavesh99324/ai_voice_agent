@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { InterviewType } from '@/services/Constants';
 
 import {
     Select,
@@ -25,7 +26,7 @@ function FormContainer() {
       <div className={"mt-5"}>
         <h2 className={"text-sm"}>Interview Duration</h2>
         <Select>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full mt-2">
             <SelectValue placeholder="Select Duration" />
           </SelectTrigger>
           <SelectContent>
@@ -36,8 +37,20 @@ function FormContainer() {
             <SelectItem value="60 Min">60 Min</SelectItem>
           </SelectContent>
         </Select>
-
       </div>
+
+      <div className={"mt-5"}>
+        <h2 className={"text-sm"}>Interview Type</h2>
+        <div>
+            {InterviewType.map((type, index) => (
+                <div key={index} className={"flex gap-2 p-1 text-black hover:bg-[rgba(163,235,30,0.4)] border border-gray-300 rounded-2xl"}>
+                    <type.icon />
+                    <span>{type.title}</span>
+                </div>
+            ))}
+        </div>
+      </div>
+
     </div>
   )
 }
