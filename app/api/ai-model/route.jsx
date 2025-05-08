@@ -4,13 +4,13 @@ import { QUESTIONS_PROMPT } from "@/services/Constants";
 
 export async function POST(req) {
 
-    const {jobPosition, jobDescription, duration, InterviewType} = await req.json();
+    const {jobPosition, jobDescription, duration, interviewType} = await req.json();
 
     const FINAL_PROMPT = QUESTIONS_PROMPT
         .replace('{{jobTitle}}', jobPosition)
         .replace('{{jobDescription}}', jobDescription)
         .replace('{{duration}}', duration) 
-        .replace('{{type}}', InterviewType);
+        .replace('{{type}}', interviewType);
 
     console.log(FINAL_PROMPT);
 
