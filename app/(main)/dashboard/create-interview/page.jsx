@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 import FormContainer from './_components/FormContainer';
 import QuestionList from './_components/QuestionList';
+import { toast } from 'sonner';
 
 function CreateInterview() {
 
@@ -21,6 +22,13 @@ function CreateInterview() {
       console.log("Form Data:", formData);
     }
 
+    const onGotoNext = () => {
+      if (!formData?.jobPosition || !formData?.jobDescription || !formData?.duration || !formData?.InterviewType) {
+        toast('Please enter all details');
+        return;
+      }
+      setStep(step + 1);
+    }
 
   return (
     <div className={"mt-15 px-10 md:px-24 lg:px-44 xl:px-56"}>
@@ -30,9 +38,9 @@ function CreateInterview() {
       </div>
         <Progress value={step * 33.33} className={"my-5"}/>
         {step === 1? <FormContainer onHandleInputChange={onHandleInputChange} 
-        GoToNext={() => setStep(step + 1)}
+        GoToNext={() => onGotoNext()}
         />
-        : step === 2? <QuestionList /> : ''}
+        : step === 2? <QuestionList formData={formData} /> : ''}
     </div>
   )
 }

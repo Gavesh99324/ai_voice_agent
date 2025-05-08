@@ -42,18 +42,18 @@ function FormContainer({ onHandleInputChange, GoToNext }) {
       <div>
         <h2 className={"text-sm font-medium"}>Job Position</h2>
         <Input placeholder={"Software Engineer"} className={"mt-2"}
-        onChange={(event) => onHandleInputChange('JobPosition', event.target.value)}
+        onChange={(event) => onHandleInputChange('jobPosition', event.target.value)}
           />
       </div>
       <div className={"mt-5"}>
         <h2 className={"text-sm font-medium"}>Job Description</h2>
         <Textarea placeholder={"Enter Details"} className={"mt-2 h-[50px]"}
-        onChange={(event) => onHandleInputChange('JobDescription', event.target.value)}
+        onChange={(event) => onHandleInputChange('jobDescription', event.target.value)}
          />
       </div>
       <div className={"mt-5"}>
         <h2 className={"text-sm font-medium"}>Interview Duration</h2>
-        <Select onValueChange={(value) => onHandleInputChange('Duration', value)} >
+        <Select onValueChange={(value) => onHandleInputChange('duration', value)} >
           <SelectTrigger className="w-full mt-2">
             <SelectValue placeholder="Select Duration" />
           </SelectTrigger>
