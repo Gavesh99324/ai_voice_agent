@@ -17,6 +17,7 @@
     "@radix-ui/react-tooltip": "^1.2.4",
     "@supabase/supabase-js": "^2.49.4",
     "ai_voice_agent": "file:",
+    "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.9.4",
