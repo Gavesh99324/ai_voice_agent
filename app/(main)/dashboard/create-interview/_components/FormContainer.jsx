@@ -37,7 +37,8 @@ function FormContainer({ onHandleInputChange }) {
 
 
   return (
-    <div className={"p-5 bg-gray-50 rounded-2xl"}>
+    <>
+    <div className={"p-5 bg-[rgba(163,235,30,0.1)] rounded-2xl"}>
       <div>
         <h2 className={"text-sm font-medium"}>Job Position</h2>
         <Input placeholder={"Software Engineer"} className={"mt-2"}
@@ -81,12 +82,23 @@ function FormContainer({ onHandleInputChange }) {
             ))}
         </div>
       </div>
+    </div>
 
+      {/*
       <div className={"mt-10 flex justify-end"}>
         <Button>Generate Question <ArrowRight /></Button>
       </div>
+      <div className={"mt-1 flex"}>
+        <Button>Cancel</Button>
+      </div>
+      */}
 
-    </div>
+      <div className="mt-10 flex justify-end gap-38">
+        <Button variant="outline">Cancel</Button>
+        <Button>Generate Question <ArrowRight /></Button>
+      </div>
+
+    </>
   )
 }
 
