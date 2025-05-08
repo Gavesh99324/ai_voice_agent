@@ -8,9 +8,11 @@ function QuestionList({ formData }) {
 
   const [loading, setLoading] = useState(true);
 
+  const [questionList, setQuestionList] = useState();
+
     useEffect(() => {
         if (formData) {
-            GenerateQuestionList();
+           GenerateQuestionList();
         }
     }, [formData])
 
@@ -20,7 +22,9 @@ function QuestionList({ formData }) {
       const result = await axios.post('/api/ai-model', {
         ...formData
       });
-      console.log(result.data);
+      console.log(result.data.content);
+      const Content = JSON.parse(result.data.content);
+      setQuestionList(Content);
       setLoading(false);
 
     } catch (error) {
@@ -33,11 +37,11 @@ function QuestionList({ formData }) {
   return (
     <div>
       {loading && 
-      <div className={"p-5 bg-blue-50 rounded-xl border border-gray-100 flex gap-5 items-center"}>
+      <div className={"p-5 bg-blue-50 rounded-xl border border-primary flex gap-5 items-center"}>
         <Loader2Icon className={"animate-spin"} />
         <div>
-          <h2>Generating Interview Questions</h2>
-          <p>Our AI is crafting your interview questions based on your position</p>
+          <h2 className={"font-medium"}>Generating Interview Questions</h2>
+          <p className={"text-primary"}>Our AI is crafting your interview questions based on your position</p>
         </div>
       </div>
       }

@@ -21,13 +21,15 @@ export async function POST(req) {
   })
 
   const completion = await openai.chat.completions.create({
-    model: "google/gemini-2.5-pro-exp-03-25",
+    model: "google/gemma-3-12b-it:free",
     messages: [
       { role: "user", content: FINAL_PROMPT }
     ],
   })
   console.log(completion.choices[0].message)
-  return NextResponse.json(completion.choices[0].message);
+  //return NextResponse.json(completion.choices[0].message);
+  return NextResponse.json({ content: completion.choices[0].message.content });
+
 
     } catch (error) {
         console.log(error);
