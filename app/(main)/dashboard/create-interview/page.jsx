@@ -10,6 +10,14 @@ function CreateInterview() {
 
     const router = useRouter();
     const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({});
+
+    const onHandleInputChange = (field, value) => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }))
+    }
 
 
   return (
@@ -19,7 +27,7 @@ function CreateInterview() {
         <h2 className={"font-bold text-2xl"}>Create New Interview</h2>
       </div>
         <Progress value={step * 33.33} className={"my-5"}/>
-        <FormContainer />   
+        <FormContainer onHandleInputChange={onHandleInputChange} />   
     </div>
   )
 }
