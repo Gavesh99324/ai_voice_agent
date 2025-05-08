@@ -15,7 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
    
 
-function FormContainer({ onHandleInputChange }) {
+function FormContainer({ onHandleInputChange, GoToNext }) {
 
   const [interviewType, setInterviewType] = useState([]);
   
@@ -84,19 +84,17 @@ function FormContainer({ onHandleInputChange }) {
       </div>
     </div>
 
-      {/*
-      <div className={"mt-10 flex justify-end"}>
+      <div className={"mt-10 flex justify-end"} onClick={() => GoToNext()}>
         <Button>Generate Question <ArrowRight /></Button>
       </div>
-      <div className={"mt-1 flex"}>
-        <Button>Cancel</Button>
-      </div>
-      */}
+      
 
+      {/*
       <div className="mt-10 flex justify-end gap-38">
         <Button variant="outline">Cancel</Button>
         <Button>Generate Question <ArrowRight /></Button>
       </div>
+      */}
 
     </>
   )

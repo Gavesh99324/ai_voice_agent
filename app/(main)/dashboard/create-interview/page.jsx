@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 import FormContainer from './_components/FormContainer';
+import QuestionList from './_components/QuestionList';
 
 function CreateInterview() {
 
@@ -28,7 +29,10 @@ function CreateInterview() {
         <h2 className={"font-bold text-2xl"}>Create New Interview</h2>
       </div>
         <Progress value={step * 33.33} className={"my-5"}/>
-        <FormContainer onHandleInputChange={onHandleInputChange} />   
+        {step === 1? <FormContainer onHandleInputChange={onHandleInputChange} 
+        GoToNext={() => setStep(step + 1)}
+        />
+        : step === 2? <QuestionList /> : ''}
     </div>
   )
 }
