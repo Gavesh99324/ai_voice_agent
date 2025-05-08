@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { InterviewType } from '@/services/Constants';
@@ -16,6 +16,26 @@ import { Button } from '@/components/ui/button';
    
 
 function FormContainer({ onHandleInputChange }) {
+
+  const [interviewType, setInterviewType] = useState([]);
+  
+  useEffect(() => {
+    if (interviewType) {
+      onHandleInputChange('InterviewType', interviewType);
+    }
+  }, [interviewType]);
+
+  const AddInterviewType = (type) => {
+    const data = interviewType.includes(type);
+    if (!data) {
+      setInterviewType(prev => [...prev, type]);
+    } else {
+      const result = interviewType.filter(item => item !== type);
+      setInterviewType(result);
+    }
+  }
+
+
   return (
     <div className={"p-5 bg-gray-50 rounded-2xl"}>
       <div>
@@ -26,11 +46,13 @@ function FormContainer({ onHandleInputChange }) {
       </div>
       <div className={"mt-5"}>
         <h2 className={"text-sm font-medium"}>Job Description</h2>
-        <Textarea placeholder={"Enter Details"} className={"mt-2 h-[50px]"}/>
+        <Textarea placeholder={"Enter Details"} className={"mt-2 h-[50px]"}
+        onChange={(event) => onHandleInputChange('JobDescription', event.target.value)}
+         />
       </div>
       <div className={"mt-5"}>
         <h2 className={"text-sm font-medium"}>Interview Duration</h2>
-        <Select>
+        <Select onValueChange={(value) => onHandleInputChange('Duration', value)} >
           <SelectTrigger className="w-full mt-2">
             <SelectValue placeholder="Select Duration" />
           </SelectTrigger>
@@ -48,7 +70,11 @@ function FormContainer({ onHandleInputChange }) {
         <h2 className={"text-sm font-medium"}>Interview Type</h2>
         <div className={"flex gap-3 flex-wrap mt-2"}>
             {InterviewType.map((type, index) => (
-                <div key={index} className={"flex items-center cursor-pointer gap-2 p-1 text-black hover:bg-[rgba(163,235,30,0.4)] border border-gray-300 rounded-2xl"}>
+                <div key={index} className={`  flex items-center cursor-pointer gap-2 p-1 text-black hover:bg-[rgba(163,235,30,0.4)] border border-gray-300 rounded-2xl 
+                  ${interviewType.includes(type.title) && 'text-[rgba(163,235,30,0.9)] text-primary'}
+                   `} 
+                onClick={() => AddInterviewType(type.title)}
+                 >
                     <type.icon className={"h-4 w-4"}/>
                     <span>{type.title}</span>
                 </div>

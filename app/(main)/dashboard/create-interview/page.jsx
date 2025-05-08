@@ -17,6 +17,7 @@ function CreateInterview() {
         ...prev,
         [field]: value
       }))
+      console.log("Form Data:", formData);
     }
 
 
