@@ -54,11 +54,11 @@ function QuestionList({ formData }) {
       }
 
       {questionList?.length > 0 &&
-        <div className={"p-5 border border-gray-300 rounded-xl"}>
+        <div className={"p-5 border border-gray-300 rounded-xl bg-white"}>
           {questionList.map((item, index) => (
-            <div key={index} className={"p-3 border border-gray-200 rounded-xl"}>
+            <div key={index} className={"p-3 border border-gray-200 rounded-xl mb-3"}>
               <h2 className={"font-medium"}>{item.question}</h2>
-              <h2>Type: {item.type}</h2>
+              <h2 className={"text-sm text-gray-500"}>Type: {item.type}</h2>
             </div>
           ))}
         </div>
