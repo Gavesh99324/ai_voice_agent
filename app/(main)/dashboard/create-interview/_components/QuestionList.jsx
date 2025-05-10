@@ -8,13 +8,15 @@ import { supabase } from '@/services/supabaseClient';
 import { InterviewType } from '@/services/Constants';
 import { useUser } from '@/app/provider';
 import { v4 as uuidv4 } from 'uuid';
+import { Loader2 } from 'lucide-react';
 
 
-function QuestionList({ formData }) {
+function QuestionList({ formData, onCreateLink }) {
 
   const [loading, setLoading] = useState(true);
   const [questionList, setQuestionList] = useState();
   const {user} = useUser(); 
+  const [saveLoading, setSaveLoading] = useState(false);
 
 
     useEffect(() => {
@@ -24,6 +26,7 @@ function QuestionList({ formData }) {
     }, [formData])
 
     const onFinish = async () => {
+      setSaveLoading(true);
 
       const interview_id = uuidv4();
       
@@ -41,11 +44,14 @@ function QuestionList({ formData }) {
         },
       ])
     .select()
+    setSaveLoading(false);
+    //console.log(data, error);
+    //setQuestionList(undefined);
 
-    console.log(data, error);
+    onCreateLink(interview_id)
+
+
     }
-
-
 
     const GenerateQuestionList = async () => {
       setLoading(true);
@@ -91,7 +97,10 @@ function QuestionList({ formData }) {
         } 
 
         <div className={"flex justify-end mt-10"}>
-          <Button onClick={onFinish}>Finish</Button>
+          <Button onClick={onFinish} disabled={saveLoading}>
+            {saveLoading && <Loader2 className={"animate-spin"} />}
+            Create Interview Link & Finish
+          </Button>
         </div>
 
     </div>
