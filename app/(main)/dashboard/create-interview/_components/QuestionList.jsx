@@ -2,19 +2,50 @@ import { Loader2Icon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import  axios  from 'axios';
+import { Button } from '@/components/ui/button';
+import QuestionListContainer from './questionListContainer';
+import { supabase } from '@/services/supabaseClient';
+import { InterviewType } from '@/services/Constants';
+import { useUser } from '@/app/provider';
+import { v4 as uuidv4 } from 'uuid';
 
 
 function QuestionList({ formData }) {
 
   const [loading, setLoading] = useState(true);
-
   const [questionList, setQuestionList] = useState();
+  const {user} = useUser(); 
+
 
     useEffect(() => {
         if (formData) {
            GenerateQuestionList();
         }
     }, [formData])
+
+    const onFinish = async () => {
+
+      const interview_id = uuidv4();
+      
+      const { data, error } = await supabase
+          .from('Interviews')
+          .insert([
+        {
+          type: formData.type, 
+          jobPosition: formData.jobPosition,
+          jobDescription: formData.jobDescription,
+          duration: formData.duration,
+          questionList: questionList,
+          userEmail: user?.email,
+          interview_id: interview_id,
+        },
+      ])
+    .select()
+
+    console.log(data, error);
+    }
+
+
 
     const GenerateQuestionList = async () => {
       setLoading(true);
@@ -52,17 +83,17 @@ function QuestionList({ formData }) {
         </div>
       </div>
       }
-
+  
       {questionList?.length > 0 &&
-        <div className={"p-5 border border-gray-300 rounded-xl bg-white"}>
-          {questionList.map((item, index) => (
-            <div key={index} className={"p-3 border border-gray-200 rounded-xl mb-3"}>
-              <h2 className={"font-medium"}>{item.question}</h2>
-              <h2 className={"text-sm text-gray-500"}>Type: {item.type}</h2>
-            </div>
-          ))}
-        </div>
+      <div>
+        <QuestionListContainer questionList={questionList} />
+      </div>
         } 
+
+        <div className={"flex justify-end mt-10"}>
+          <Button onClick={onFinish}>Finish</Button>
+        </div>
+
     </div>
   )
 }
