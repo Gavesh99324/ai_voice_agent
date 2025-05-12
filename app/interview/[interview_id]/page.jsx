@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { IoIosMic } from "react-icons/io";
 import { TypeAnimation } from 'react-type-animation';
 import Image from 'next/image';
-import { Clock, Info, Video } from 'lucide-react';
+import { Clock, Info, Video, Settings } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useParams } from 'next/navigation';
@@ -23,7 +23,7 @@ function Interview() {
   }, [interview_id]);
 
   const [interviewData, setInterviewData] = useState();
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const GetInterviewDetails = async () => {
@@ -32,12 +32,13 @@ function Interview() {
     let { data: Interviews, error } = await supabase
       .from('Interviews')
       .select("jobPosition, jobDescription, duration, type")
-      .eq('interview_id', interview_id);
+      .eq('interview_id', interview_id); 
 
       setInterviewData(Interviews[0]);
-      if (Interview?.length == 0) {
+      setLoading(false);
+      if (Interviews?.length == 0) {
         toast('Incorrect Interview Link');
-        return;
+        return; 
       }
       console.log(Interviews[0]);
 
@@ -73,7 +74,8 @@ function Interview() {
 
         <div className={"w-full"}>
           <h2>Enter Full Name</h2>
-          <Input placeholder="e.g. John Doe" />
+          <Input placeholder="e.g. John Doe" value={userName} onChange={(event) => setUserName(event.target.value)}/>
+
         </div>
 
         <div className={"p-3 bg-blue-100 gap-4 rounded-lg mt-3"}>
@@ -86,7 +88,8 @@ function Interview() {
           </ul>
         </div>
 
-        <Button className={"mt-5 w-full font-bold"}><Video/>Join Interview</Button>
+        <Button className={"mt-5 w-full font-bold"} disabled={userName.trim() === ''}><Video/>Join Interview</Button>
+        <Button className={"mt-5 w-full font-bold bg-gray-300"} ><Settings/>Test Audio & Video</Button>
       </div>
     </div>
   )
