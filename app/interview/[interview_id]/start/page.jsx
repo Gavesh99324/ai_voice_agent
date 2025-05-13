@@ -4,9 +4,13 @@ import React, { useContext } from 'react';
 import { Timer, Mic, Phone } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContext';
 import Image from 'next/image';
+import Vapi from "@vapi-ai/web";
+
 
 function StartInterview() {
+
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
+  const vapi = new Vapi("YOUR_API_KEY");
  
   return (
     <div className="p-20 lg:px-48 xl:px-56">
@@ -16,7 +20,7 @@ function StartInterview() {
           <Timer />
           00.00.00
         </span>
-      </h2>
+      </h2> 
 
       <div className={"grid grid-cols-1 md:grid-cols-2 gap-7 mt-5"}>
         <div className={"bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center"}>
