@@ -48,6 +48,14 @@ function Interview() {
     }
   }
 
+  const onJoinInterview = async () => {
+    let { data: Interviews, error } = await supabase
+     .from('Interviews')
+     .select('*')    
+     .eq('interview_id', interview_id); 
+ 
+     console.log(Interviews[0]);
+  }
 
   return (
     <div className={"px-10 md:px-28 lg:px-40 xl:px-64 mt-16 mb-20"}>
@@ -88,7 +96,9 @@ function Interview() {
           </ul>
         </div>
 
-        <Button className={"mt-5 w-full font-bold"} disabled={userName.trim() === ''}><Video/>Join Interview</Button>
+        <Button className={"mt-5 w-full font-bold"} disabled={userName.trim() === '' } onclick={() => {onJoinInterview()}}>
+          <Video/>Join Interview
+        </Button>
         <Button className={"mt-5 w-full font-bold bg-gray-300"} ><Settings/>Test Audio & Video</Button>
       </div>
     </div>
