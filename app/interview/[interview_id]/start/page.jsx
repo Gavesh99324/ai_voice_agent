@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useContext, useEffect } from 'react';
@@ -5,7 +6,7 @@ import { Timer, Mic, Phone } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContext';
 import Image from 'next/image';
 import Vapi from "@vapi-ai/web";
-
+import AlertConfirmation from './_components/AlertConfirmation';
 
 function StartInterview() {
 
@@ -16,23 +17,17 @@ function StartInterview() {
     interviewInfo && startCall();
   }, [interviewInfo]);
 
-  const startCall = () => {
-    let questionList;
-    interviewInfo?.interviewData?.questionList.forEach((item, index) =>(
-      questionList = item?.question + "," + questionList
-    ))
-    //console.log(questionList);
-  } 
+  const startCall = async () => {
 
- 
-   const assistantOptions = {
+    let questionList;
+    interviewInfo?.interviewData?.questionList.forEach((item, index) => (
+      questionList = item?.question + "," + questionList
+    ));
+
+     const assistantOptions = {
   name: "AI Recruiter",
   firstMessage: "Hi "+interviewInfo?.userName+", how are you? Ready for your interview on "+interviewInfo?.interviewData?.jobPosition,
-  transcript: {
-    provider: "deepgram",
-    model: "nova-2",
-    language: "en-US",
-  },
+  
   voice: {
     provider: "playht",
     voiceId: "jennifer",
@@ -47,10 +42,10 @@ function StartInterview() {
 You are an AI voice assistant conducting interviews.
 Your job is to ask candidates provided interview questions, assess their responses.
 Begin the conversation with a friendly introduction, setting a relaxed yet professional tone. Example:
-"Hey there! Welcome to your {{jobPosition}} interview. Let’s get started with a few questions!"
+"Hey there! Welcome to your `+interviewInfo?.interviewData?.jobPosition+` interview. Let’s get started with a few questions!"
 
 Ask one question at a time and wait for the candidate’s response before proceeding. Keep the questions clear and concise. Below Are the questions ask one by one:
-Questions: {{questionList}}
+Questions: `+questionList+`
 
 If the candidate struggles, offer hints or rephrase the question without giving away the answer. Example:
 "Need a hint? Think about how React tracks component updates!"
@@ -78,7 +73,21 @@ Key Guidelines:
     ],
   },
 };
+//transcript: { provider: "deepgram", model: "nova-2", language: "en-US", },
 
+console.log("assistantOptions:", assistantOptions);
+
+ try {
+    await vapi.start(assistantOptions);
+  } catch (err) {
+    console.error("Vapi start error:", err); 
+  }
+
+} 
+
+   const stopInterview = () => {
+    vapi.stop();
+   }
 
 
   return (
@@ -104,7 +113,9 @@ Key Guidelines:
 
       <div className={"flex items-center gap-5 mt-5 justify-center"}>
         <Mic className={"h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer"} />
-        <Phone className={"h-12 w-12 p-3 bg-green-500 text-white rounded-full cursor-pointer"} />
+        <AlertConfirmation stopInterview={() => stopInterview()}>
+          <Phone className={"h-12 w-12 p-3 bg-green-500 text-white rounded-full cursor-pointer"} />
+        </AlertConfirmation>
       </div>
 
       <h2 className={"text-sm text-gray-400 mt-5 text-center"}>Interview in Progress...</h2>
@@ -114,3 +125,4 @@ Key Guidelines:
 }
 
 export default StartInterview;
+
