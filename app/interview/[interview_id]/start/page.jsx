@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useContext, useEffect } from 'react';
@@ -7,11 +6,13 @@ import { InterviewDataContext } from '@/context/InterviewDataContext';
 import Image from 'next/image';
 import Vapi from "@vapi-ai/web";
 import AlertConfirmation from './_components/AlertConfirmation';
+import { toast } from 'sonner';
 
 function StartInterview() {
 
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
   const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY);
+  const [activeUser, setActiveUser] = useState(false);
 
   useEffect(() => {
     interviewInfo && startCall();
@@ -89,6 +90,29 @@ console.log("assistantOptions:", assistantOptions);
     vapi.stop();
    }
 
+   vapi.on("call-start", () => {
+      console.log("Call has started.");
+      toast('Call Connected');
+  });
+   vapi.on("speech-start", () => {
+      console.log("Assistant speech has started.");
+      setActiveUser(false);
+  });
+
+   vapi.on("speech-end", () => {
+      console.log("Assistant speech has ended.");
+      setActiveUser(true);
+  });
+
+   vapi.on("call-end", () => {
+      console.log("Call has ended.");
+      toast('Interview Ended');
+  });
+
+
+
+
+
 
   return (
     <div className="p-20 lg:px-48 xl:px-56">
@@ -114,7 +138,7 @@ console.log("assistantOptions:", assistantOptions);
       <div className={"flex items-center gap-5 mt-5 justify-center"}>
         <Mic className={"h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer"} />
         <AlertConfirmation stopInterview={() => stopInterview()}>
-          <Phone className={"h-12 w-12 p-3 bg-green-500 text-white rounded-full cursor-pointer"} />
+          <Phone className={"h-12 w-12 p-3 bg-red-500 text-white rounded-full cursor-pointer"} />
         </AlertConfirmation>
       </div>
 
