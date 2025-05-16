@@ -93,7 +93,7 @@ console.log("assistantOptions:", assistantOptions);
 
    vapi.on("call-start", () => {
       console.log("Call has started.");
-      toast('Call Connected');
+      toast('Call Connected...');
   });
    vapi.on("speech-start", () => {
       console.log("Assistant speech has started.");
@@ -127,11 +127,13 @@ console.log("assistantOptions:", assistantOptions);
             {!activeUser && (<span className={"absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping"} />)}
             <Image src={'/Face.jpg'} alt={"face"} width={100} height={100} className={"w-[60px] h-[60px] rounded-full object-cover"} />
           </div>
-
           <h2>Recruiter</h2>
         </div> 
         <div className={"bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center"}>
-          <h2 className={"text-2xl bg-primary text-white p-3 rounded-full px-5"}>{interviewInfo?.userName?.[0] || 'U'}</h2>
+          <div className="relative w-[60px] h-[60px]">
+            {activeUser && (<span className={"absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping"} />)}
+            <h2 className={"text-2xl bg-primary text-white p-3 rounded-full px-5"}>{interviewInfo?.userName?.[0] || 'U'}</h2>
+          </div>
           <h2>{interviewInfo?.userName}</h2>
         </div>
       </div>

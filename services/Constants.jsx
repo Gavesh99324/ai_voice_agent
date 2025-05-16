@@ -80,7 +80,28 @@ format: interviewQuestions=[
 `;
 
 
+export const FEEDBACK_PROMPT = ` {{conversation}}  
+Depends on this Interview Conversation between assistant and user,  
+Give me feedback for user interview. Give me rating out of 10 for technical Skills, 
+Communication, Problem Solving, Experience. Also give me summery in 3 lines about the 
+interview and one line to let me know whether is recommanded for hire or not with msg. 
+Give me response in JSON format  
 
+{  
+  feedback:{  
+    rating:{  
+      tecnhicalSkills:5,  
+      communication:6,  
+      problemSolving:4,  
+      experince:7  
+    },  
+    summery:"The candidate has moderate technical skills and good communication. Problem-solving abilities need enhancement. Overall, they show potential but need more structured thinking.",  
+    Recommendation:"No",  
+    RecommendationMsg:"Not recommended for hire currently. Consider after further development in problem-solving."  
+  }  
+}
+
+`
 
 
 
