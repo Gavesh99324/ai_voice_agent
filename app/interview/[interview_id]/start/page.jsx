@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Timer, Mic, Phone } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContext';
@@ -8,12 +7,14 @@ import Image from 'next/image';
 import Vapi from "@vapi-ai/web";
 import AlertConfirmation from './_components/AlertConfirmation';
 import { toast } from 'sonner';
+import axios from 'axios';
 
 function StartInterview() {
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
   const vapiRef = useRef(null);
   const [activeUser, setActiveUser] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
+  const [conversation, setConversation] = useState([]);
 
   const formatTime = (totalSeconds) => {
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
@@ -52,14 +53,25 @@ function StartInterview() {
       console.log("Call has ended.");
       toast('Interview Ended');
       clearInterval(interval);
+      GenerateFeedback();
     });
 
     vapi.on("message", (message) => {
-      console.log(message);
+      console.log(message?.conversation);
+      setConversation(message?.conversation)
     });
 
     return () => clearInterval(interval); 
   }, []);
+
+  const GenerateFeedback = async () => {
+    const result = await axios.post('/api/ai-feedback', { conversation: conversation });
+
+    console.log(result?.data);
+    const Content = result.data.content;
+    const FINAL_CONTENT = Content.replace("```json", "").replace("```", "").trim();
+    console.log(FINAL_CONTENT);
+  }
 
   useEffect(() => {
     interviewInfo && startCall();
