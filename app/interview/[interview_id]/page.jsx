@@ -29,11 +29,12 @@ function Interview() {
   const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [timeLeft, setTimeLeft] = useState(null);
+
 
   const {interviewInfo, setInterviewInfo} = useContext(InterviewDataContext);
 
   const router = useRouter(); 
-
 
   const GetInterviewDetails = async () => {
     setLoading(true); 
@@ -102,9 +103,9 @@ function Interview() {
           <Input placeholder="e.g. John Doe" value={userName} onChange={(event) => setUserName(event.target.value)}/>
         </div>
 
-        <div className={"w-full"}>
+        <div className={"w-full mt-4"}>
           <h2>Enter Your Email</h2>
-          <Input placeholder="e.g. john@gmail.com" value={userName} onChange={(event) => setUserEmail(event.target.value)}/>
+          <Input placeholder="e.g. john@gmail.com" value={userEmail} onChange={(event) => setUserEmail(event.target.value)}/>
         </div>
 
         <div className={"p-3 bg-blue-100 gap-4 rounded-lg mt-3"}>
@@ -127,4 +128,6 @@ function Interview() {
 };
 
 export default Interview;
+
+
 
