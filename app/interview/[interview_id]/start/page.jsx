@@ -1,6 +1,6 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Timer, Mic, Phone } from 'lucide-react';
+import { Timer, Mic, Phone, Loader2Icon } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContext';
 import Image from 'next/image';
 import Vapi from "@vapi-ai/web";
@@ -91,12 +91,23 @@ function StartInterview() {
   }, [interviewInfo]);
 
   const startCall = async () => {
+
+    if (interviewInfo?.participants) {
+    interviewInfo.participants.forEach((participant) => {
+       console.log(`Participant name: ${participant.name}, email: ${participant.email}`);    
+       sendNotification(participant.email, "Interview is starting");
+      });
+
+  } else {
+    console.warn("Participants list is missing or null");
+  }
+
     const vapi = vapiRef.current;
     let questionList = "";
 
-    interviewInfo?.interviewData?.questionList.forEach((item) => {
-      questionList += item?.question + ", ";
-    });
+    (interviewInfo?.interviewData?.questionList || []).forEach((item) => {
+        questionList += item?.question + ", ";
+  });
 
     const assistantOptions = {
       name: "AI Recruiter",
@@ -167,7 +178,7 @@ Key Guidelines:
         .select();
 
       console.log("Feedback saved:", data);
-      router.replace('/interview/completed');
+      router.replace('/interview/' + interview_id + '/completed');
     } catch (err) {
       console.error("Feedback generation error:", err);
       toast.error("Error generating feedback.");
@@ -223,10 +234,21 @@ Key Guidelines:
       </div>
 
       <div className="flex items-center gap-5 mt-5 justify-center">
-        <Mic className="h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer" />
-        <AlertConfirmation stopInterview={stopInterview}>
-          <Phone className="h-12 w-12 p-3 bg-red-500 text-white rounded-full cursor-pointer" />
-        </AlertConfirmation>
+         <Mic className="h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer" />
+        {/*<AlertConfirmation stopInterview={stopInterview}> */}
+  {
+    !loading 
+    ? (
+      <Phone 
+        className="h-12 w-12 p-3 bg-red-500 text-white rounded-full cursor-pointer"
+        onClick={() => stopInterview()}
+      />
+    ) 
+    : (
+      <Loader2Icon className='animate-spin' />
+    )
+  }
+  {/*</AlertConfirmation>*/}
       </div>
 
       <h2 className="text-sm text-gray-400 mt-5 text-center">Interview in Progress...</h2>
