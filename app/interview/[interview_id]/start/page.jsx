@@ -92,14 +92,6 @@ function StartInterview() {
 
   const startCall = async () => {
        
-    /*
-      if (Array.isArray(interviewInfo?.participants) && interviewInfo.participants.length > 0) {
-    interviewInfo.participants.forEach((participant) => {
-      console.log(`Participant name: ${participant.name}, email: ${participant.email}`);
-      sendNotification(participant.email, "Interview is starting");
-    });
-    */
-
     if (interviewInfo?.participants) {
       
     interviewInfo.participants.forEach((participant) => {
@@ -109,7 +101,6 @@ function StartInterview() {
 
   } else {
     console.warn("Participants list is missing or null");
-    //return;
   }
 
     const vapi = vapiRef.current;
@@ -175,15 +166,13 @@ Key Guidelines:
     let feedbackData;
 
     try {
-      // Remove markdown code block markers if present
       const FINAL_CONTENT = content.replace(/```json/g, "").replace(/```/g, "").trim();
-      feedbackData = JSON.parse(FINAL_CONTENT); // Parse JSON safely
+      feedbackData = JSON.parse(FINAL_CONTENT); 
     } catch (parseErr) {
       console.warn("Parsing fallback: returning raw string as feedback");
-      feedbackData = { raw: content }; // fallback store raw string if JSON parse fails
+      feedbackData = { raw: content }; 
     }
 
-    // IMPORTANT: stringify feedbackData because your DB column is text (not JSON type)
     const { data, error } = await supabase
       .from('interview-feedback')
       .insert([
