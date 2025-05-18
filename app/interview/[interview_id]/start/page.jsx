@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Timer, Mic, Phone } from 'lucide-react';
 import { InterviewDataContext } from '@/context/InterviewDataContext';
@@ -8,6 +7,13 @@ import Vapi from "@vapi-ai/web";
 import AlertConfirmation from './_components/AlertConfirmation';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { useParams, useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 function StartInterview() {
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
@@ -15,6 +21,10 @@ function StartInterview() {
   const [activeUser, setActiveUser] = useState(false);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [conversation, setConversation] = useState([]);
+  const { interview_id } = useParams();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const callStartedRef = useRef(false);
 
   const formatTime = (totalSeconds) => {
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
@@ -25,9 +35,17 @@ function StartInterview() {
 
   useEffect(() => {
     vapiRef.current = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY);
-
     const vapi = vapiRef.current;
     let interval;
+
+    const handleMessage = (message) => {
+      console.log('Message:', message);
+      if (message?.conversation) {
+        const convoString = JSON.stringify(message.conversation);
+        console.log('Conversation:', convoString);
+        setConversation(convoString);
+      }
+    };
 
     vapi.on("call-start", () => {
       console.log("Call has started.");
@@ -53,28 +71,23 @@ function StartInterview() {
       console.log("Call has ended.");
       toast('Interview Ended');
       clearInterval(interval);
+      callStartedRef.current = false;  // Reset flag to allow new calls if needed
       GenerateFeedback();
     });
 
-    vapi.on("message", (message) => {
-      console.log(message?.conversation);
-      setConversation(message?.conversation)
-    });
+    vapi.on("message", handleMessage);
 
-    return () => clearInterval(interval); 
-  }, []);
-
-  const GenerateFeedback = async () => {
-    const result = await axios.post('/api/ai-feedback', { conversation: conversation });
-
-    console.log(result?.data);
-    const Content = result.data.content;
-    const FINAL_CONTENT = Content.replace("```json", "").replace("```", "").trim();
-    console.log(FINAL_CONTENT);
-  }
+    return () => {
+      vapi.off("message", handleMessage);
+      clearInterval(interval);
+    };
+  }, []);  // Run once on mount
 
   useEffect(() => {
-    interviewInfo && startCall();
+    if (interviewInfo && !callStartedRef.current) {
+      callStartedRef.current = true;
+      startCall();
+    }
   }, [interviewInfo]);
 
   const startCall = async () => {
@@ -100,28 +113,20 @@ function StartInterview() {
             role: "system",
             content: `
 You are an AI voice assistant conducting interviews.
-Your job is to ask candidates provided interview questions, assess their responses.
-Begin the conversation with a friendly introduction, setting a relaxed yet professional tone. Example:
-"Hey there! Welcome to your ${interviewInfo?.interviewData?.jobPosition} interview. Let’s get started with a few questions!"
-
-Ask one question at a time and wait for the candidate’s response before proceeding. Keep the questions clear and concise. Below Are the questions ask one by one:
+Your job is to ask candidates provided interview questions and assess their responses.
+Begin the conversation with a friendly introduction, setting a relaxed yet professional tone. 
+Example: "Hey there! Welcome to your ${interviewInfo?.interviewData?.jobPosition} interview. Let’s get started with a few questions!"
+Ask one question at a time and wait for the candidate’s response before proceeding. 
+Keep the questions clear and concise. 
 Questions: ${questionList}
-
-If the candidate struggles, offer hints or rephrase the question without giving away the answer. Example:
-"Need a hint? Think about how React tracks component updates!"
-
-Provide brief, encouraging feedback after each answer. Example:
-"Nice! That’s a solid answer."
-"Hmm, not quite! Want to try again?"
-
+If the candidate struggles, offer hints or rephrase the question without giving away the answer.
+Example: "Need a hint? Think about how React tracks component updates!"
+Provide brief, encouraging feedback after each answer. 
+Example: "Nice! That’s a solid answer." / "Hmm, not quite! Want to try again?"
 Keep the conversation natural and engaging—use casual phrases like "Alright, next up..." or "Let’s tackle a tricky one!"
-
-After 5–7 questions, wrap up the interview smoothly by summarizing their performance. Example:
-"That was great! You handled some tough questions well. Keep sharpening your skills!"
-
-End on a positive note:
-"Thanks for chatting! Hope to see you crushing projects soon!"
-
+After 5–7 questions, wrap up the interview smoothly by summarizing their performance.
+Example: "That was great! You handled some tough questions well. Keep sharpening your skills!"
+End on a positive note: "Thanks for chatting! Hope to see you crushing projects soon!"
 Key Guidelines:
 ✔️ Be friendly, engaging, and witty
 ✔️ Keep responses short and natural, like a real conversation
@@ -140,6 +145,37 @@ Key Guidelines:
     }
   };
 
+  const GenerateFeedback = async () => {
+    setLoading(true);
+    try {
+      const result = await axios.post('/api/ai-feedback', { conversation });
+      const content = result.data.content;
+      const FINAL_CONTENT = content.replace("```json", "").replace("```", "").trim();
+      const feedbackData = JSON.parse(FINAL_CONTENT);
+
+      const { data, error } = await supabase
+        .from('interview-feedback')
+        .insert([
+          {
+            userName: interviewInfo?.userName,
+            userEmail: interviewInfo?.userEmail,
+            interviewId: interview_id,
+            feedback: feedbackData,
+            recommended: false,
+          },
+        ])
+        .select();
+
+      console.log("Feedback saved:", data);
+      router.replace('/interview/completed');
+    } catch (err) {
+      console.error("Feedback generation error:", err);
+      toast.error("Error generating feedback.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const stopInterview = () => {
     vapiRef.current?.stop();
   };
@@ -155,6 +191,7 @@ Key Guidelines:
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mt-5">
+        {/* Recruiter */}
         <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center">
           <div className="relative w-[60px] h-[60px]">
             {!activeUser && (
@@ -170,6 +207,8 @@ Key Guidelines:
           </div>
           <h2>Recruiter</h2>
         </div>
+
+        {/* User */}
         <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center">
           <div className="relative w-[60px] h-[60px]">
             {activeUser && (
@@ -196,4 +235,3 @@ Key Guidelines:
 }
 
 export default StartInterview;
-
