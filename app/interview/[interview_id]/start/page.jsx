@@ -71,7 +71,7 @@ function StartInterview() {
       console.log("Call has ended.");
       toast('Interview Ended');
       clearInterval(interval);
-      callStartedRef.current = false;  // Reset flag to allow new calls if needed
+      callStartedRef.current = false;  
       GenerateFeedback();
     });
 
@@ -81,7 +81,7 @@ function StartInterview() {
       vapi.off("message", handleMessage);
       clearInterval(interval);
     };
-  }, []);  // Run once on mount
+  }, []);  
 
   useEffect(() => {
     if (interviewInfo && !callStartedRef.current) {
@@ -91,8 +91,17 @@ function StartInterview() {
   }, [interviewInfo]);
 
   const startCall = async () => {
+       
+    /*
+      if (Array.isArray(interviewInfo?.participants) && interviewInfo.participants.length > 0) {
+    interviewInfo.participants.forEach((participant) => {
+      console.log(`Participant name: ${participant.name}, email: ${participant.email}`);
+      sendNotification(participant.email, "Interview is starting");
+    });
+    */
 
     if (interviewInfo?.participants) {
+      
     interviewInfo.participants.forEach((participant) => {
        console.log(`Participant name: ${participant.name}, email: ${participant.email}`);    
        sendNotification(participant.email, "Interview is starting");
@@ -100,6 +109,7 @@ function StartInterview() {
 
   } else {
     console.warn("Participants list is missing or null");
+    //return;
   }
 
     const vapi = vapiRef.current;
@@ -202,7 +212,7 @@ Key Guidelines:
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mt-5">
-        {/* Recruiter */}
+        
         <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center">
           <div className="relative w-[60px] h-[60px]">
             {!activeUser && (
@@ -219,7 +229,7 @@ Key Guidelines:
           <h2>Recruiter</h2>
         </div>
 
-        {/* User */}
+        
         <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center">
           <div className="relative w-[60px] h-[60px]">
             {activeUser && (
