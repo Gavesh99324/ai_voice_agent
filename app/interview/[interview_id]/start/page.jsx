@@ -167,6 +167,101 @@ Key Guidelines:
   };
 
   const GenerateFeedback = async () => {
+  setLoading(true);
+  try {
+    const result = await axios.post('/api/ai-feedback', { conversation });
+    const content = result.data.content;
+
+    let feedbackData;
+
+    try {
+      // Remove markdown code block markers if present
+      const FINAL_CONTENT = content.replace(/```json/g, "").replace(/```/g, "").trim();
+      feedbackData = JSON.parse(FINAL_CONTENT); // Parse JSON safely
+    } catch (parseErr) {
+      console.warn("Parsing fallback: returning raw string as feedback");
+      feedbackData = { raw: content }; // fallback store raw string if JSON parse fails
+    }
+
+    // IMPORTANT: stringify feedbackData because your DB column is text (not JSON type)
+    const { data, error } = await supabase
+      .from('interview-feedback')
+      .insert([
+        {
+          userName: interviewInfo?.userName,
+          userEmail: interviewInfo?.userEmail,
+          interview_id: interview_id,
+          feedback: JSON.stringify(feedbackData), 
+          recommended: false,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+      toast.error("Failed to save feedback.");
+      setLoading(false);
+      return;
+    }
+
+    console.log("Feedback saved:", data);
+    router.replace('/interview/' + interview_id + '/completed');
+  } catch (err) {
+    console.error("Feedback generation error:", err);
+    toast.error("Error generating feedback.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+  {/*
+
+  const GenerateFeedback = async () => {
+  setLoading(true);
+  try {
+    const result = await axios.post('/api/ai-feedback', { conversation });
+    const content = result.data.content;
+
+    let feedbackData;
+
+    try {
+      const FINAL_CONTENT = content.replace("```json", "").replace("```", "").trim();
+      feedbackData = JSON.parse(FINAL_CONTENT); // ⚠️ If content is not valid JSON, this fails
+    } catch (parseErr) {
+      console.warn("Parsing fallback: returning raw string as feedback");
+      feedbackData = { raw: content }; // fallback: store raw feedback text instead
+    }
+
+    const { data, error } = await supabase
+      .from('interview-feedback')
+      .insert([
+        {
+          userName: interviewInfo?.userName,
+          userEmail: interviewInfo?.userEmail,
+          interviewId: interview_id,
+          feedback: feedbackData,
+          recommended: false,
+        },
+      ])
+      .select();
+
+    console.log("Feedback saved:", data);
+    router.replace('/interview/' + interview_id + '/completed');
+  } catch (err) {
+    console.error("Feedback generation error:", err);
+    toast.error("Error generating feedback.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+*/}
+
+
+  {/*
+  const GenerateFeedback = async () => {
     setLoading(true);
     try {
       const result = await axios.post('/api/ai-feedback', { conversation });
@@ -196,6 +291,7 @@ Key Guidelines:
       setLoading(false);
     }
   };
+  */}
 
   const stopInterview = () => {
     vapiRef.current?.stop();
