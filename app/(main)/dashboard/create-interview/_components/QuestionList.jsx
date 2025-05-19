@@ -34,7 +34,7 @@ function QuestionList({ formData, onCreateLink }) {
           .from('Interviews')
           .insert([
         {
-          type: formData.type, 
+          type: formData.InterviewType,
           jobPosition: formData.jobPosition,
           jobDescription: formData.jobDescription,
           duration: formData.duration,
@@ -45,9 +45,6 @@ function QuestionList({ formData, onCreateLink }) {
       ])
     .select()
     setSaveLoading(false);
-    //console.log(data, error);
-    //setQuestionList(undefined);
-
     onCreateLink(interview_id)
 
 

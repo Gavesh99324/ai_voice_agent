@@ -87,14 +87,6 @@ function FormContainer({ onHandleInputChange, GoToNext }) {
       <div className={"mt-10 flex justify-end"} onClick={() => GoToNext()}>
         <Button>Generate Question <ArrowRight /></Button>
       </div>
-      
-
-      {/*
-      <div className="mt-10 flex justify-end gap-38">
-        <Button variant="outline">Cancel</Button>
-        <Button>Generate Question <ArrowRight /></Button>
-      </div>
-      */}
 
     </>
   )

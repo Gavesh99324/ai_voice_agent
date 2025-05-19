@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Copy, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 function InterviewCard({ interview, viewDetail=false }) {
 
@@ -37,7 +38,9 @@ function InterviewCard({ interview, viewDetail=false }) {
         <Button className={"flex-1"} onClick={() => onSend()}><Send /> Send Invite</Button>
        </div>
        : 
+       <Link href={'/scheduled-interview/' + interview?.interview_id + '/details'}>
         <Button className={"mt-5 w-full"} variant={'outline'}>View Detail <ArrowRight /></Button>
+       </Link>
        }
     </div>
   )
