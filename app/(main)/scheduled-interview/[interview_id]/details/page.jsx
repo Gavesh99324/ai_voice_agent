@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
 import InterviewDetailContainer from '../_components/InterviewDetailContainer';
+import CandidateList from '../_components/CandidateList';
+
 
 function InterviewDetail() {
 
@@ -31,8 +33,9 @@ function InterviewDetail() {
     <div className={"mt-15"}>
       <h2 className={"font-bold text-2xl"}>Interview Detail</h2>
       <InterviewDetailContainer interviewDetail={interviewDetail} />
+      <CandidateList candidateList={interviewDetail?.['interview-feedback']} />
     </div>
   )
-}
+};
 
 export default InterviewDetail;

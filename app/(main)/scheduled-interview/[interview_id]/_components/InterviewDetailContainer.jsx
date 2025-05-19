@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Calendar } from 'lucide-react';
+import { Clock, Calendar, MessageCircleCodeIcon } from 'lucide-react';
 import moment from 'moment';
 
 function InterviewDetailContainer({ interviewDetail }) {
@@ -28,9 +28,26 @@ function InterviewDetailContainer({ interviewDetail }) {
         }
       </div>
 
-      <div>
-        <h2 className={"font-bold mt-5"}>Job Description</h2>
-        <p className={"mt-2"}>{interviewDetail?.jobDescription}</p>
+      <div className={"mt-5"}>
+        <h2 className={"font-bold"}>Job Description</h2>
+        <p className={"mt-2 text-sm leading-6"}>{interviewDetail?.jobDescription}</p>
+      </div>
+
+      <div className={"mt-5"}>
+        <h2 className={"font-bold"}>Interview Questions</h2>
+
+        <div className={"grid grid-cols-2 gap-3 mt-3"}>
+            {Array.isArray(interviewDetail?.questionList) && interviewDetail.questionList.length > 0 ? (
+              interviewDetail.questionList.map((item, index) => (
+               <h2 key={index} className="text-xs flex">
+                  <MessageCircleCodeIcon className="h-6 w-6 pr-1 text-green-400" /> {item?.question}
+               </h2>
+            ))
+              ) : (
+            <p className="text-xs text-gray-500 col-span-2">No questions available.</p>
+        )}
+        </div>
+
       </div>
     </div>
   )
