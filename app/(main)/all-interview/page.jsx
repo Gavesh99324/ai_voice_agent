@@ -8,7 +8,6 @@ import InterviewCard from '../dashboard/_components/InterviewCard';
 import { Video } from 'lucide-react';
 
 function AllInterview() {
-
     
     const [ InterviewList, setInterviewList ] = useState([]);
     const {user} = useUser();

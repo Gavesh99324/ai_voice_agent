@@ -3,8 +3,9 @@ import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { Copy, Send } from 'lucide-react';
 import { toast } from 'sonner';
+import { ArrowRight } from 'lucide-react';
 
-function InterviewCard({ interview }) {
+function InterviewCard({ interview, viewDetail=false }) {
 
   const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interview?.interview_id; 
 
@@ -28,10 +29,15 @@ function InterviewCard({ interview }) {
        <h2 className={"text-black font-bold mt-3 text-lg"}>{interview?.jobPosition}</h2>
        <h2 className={"mt-2"}>{interview?.duration}</h2>
 
+
+       {!viewDetail? 
        <div className={"flex gap-3 w-full mt-5"}>
         <Button variant={'outline'} className={"flex-1"} onClick={() => copyLink()}><Copy /> Copy Link</Button>
         <Button className={"flex-1"} onClick={() => onSend()}><Send /> Send Invite</Button>
        </div>
+       : 
+        <Button className={"mt-5 w-full"} variant={'outline'}>View Detail <ArrowRight /></Button>
+       }
     </div>
   )
 }
