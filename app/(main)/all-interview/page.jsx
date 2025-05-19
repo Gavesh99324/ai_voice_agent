@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Video } from 'lucide-react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
-import InterviewCard from './InterviewCard';
+import InterviewCard from '../dashboard/_components/InterviewCard';
+import { Video } from 'lucide-react';
 
-function LatestInterviewsList() {
+function AllInterview() {
 
+    
     const [ InterviewList, setInterviewList ] = useState([]);
     const {user} = useUser();
 
@@ -20,17 +23,15 @@ function LatestInterviewsList() {
           .select('*') 
           .eq('userEmail', user?.email)
           .order('id', { ascending: false })
-          .limit(6)
 
           console.log(Interviews);
           setInterviewList(Interviews);
 
     }
   
-
   return (
     <div className={"my-5"}>
-      <h2 className={"font-bold text-2xl"}>Interview Records</h2>
+      <h2 className={"font-bold text-2xl mt-15"}>All Interview Records</h2>
 
       {InterviewList?.length == 0 && (
         <div className={"p-5 flex flex-col gap-3 items-center mt-5"}>
@@ -52,4 +53,4 @@ function LatestInterviewsList() {
   )
 }
 
-export default LatestInterviewsList;
+export default AllInterview;
