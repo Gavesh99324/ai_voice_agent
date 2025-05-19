@@ -27,7 +27,7 @@ function LatestInterviewsList() {
 
   return (
     <div className={"my-5"}>
-      <h2 className={"font-bold text-2xl"}>Previously Created Interviews</h2>
+      <h2 className={"font-bold text-2xl"}>Interview Records</h2>
 
       {InterviewList?.length == 0 && (
         <div className={"p-5 flex flex-col gap-3 items-center mt-5"}>
@@ -38,7 +38,7 @@ function LatestInterviewsList() {
       )}
 
       {InterviewList && 
-        <div className={"grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5"}>
+        <div className={"grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5 mt-5"}>
           {InterviewList.map((interview, index) => (
             <InterviewCard interview={interview} key={index} />
           ))}
