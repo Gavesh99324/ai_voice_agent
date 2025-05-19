@@ -27,8 +27,9 @@ function InterviewCard({ interview, viewDetail=false }) {
        </div>
 
        <h2 className={"text-black font-bold mt-3 text-lg"}>{interview?.jobPosition}</h2>
-       <h2 className={"mt-2"}>{interview?.duration}</h2>
-
+       <h2 className={"mt-2 flex justify-between text-gray-500"}>{interview?.duration}
+        <span className={"text-green-700"}>{interview['interview-feedback']?.length} User</span>
+       </h2>
 
        {!viewDetail? 
        <div className={"flex gap-3 w-full mt-5"}>
