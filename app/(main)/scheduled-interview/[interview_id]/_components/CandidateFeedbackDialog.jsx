@@ -28,7 +28,7 @@ function CandidateFeedbackDialog({ candidate }) {
       <DialogTrigger asChild>
         <Button variant={"outline"} className={"text-primary"}>View Report</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[70vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Feedback</DialogTitle>
           <DialogDescription asChild>
@@ -82,17 +82,6 @@ function CandidateFeedbackDialog({ candidate }) {
                 <h2 className="font-bold">Summary</h2>
                 <p className="text-sm mt-2">{summary}</p>
               </div>
-
-
-            {/*
-            <div className={"flex items-center justify-between"}>
-              <div className="mt-5">
-                <h2 className="font-bold">Recommendation</h2>
-                <p className="text-sm mt-2">{recommendation}</p>
-              </div>
-              <Button></Button>
-            </div>
-            */}
 
             <div className={`flex items-center justify-between p-5 gap-5 mt-5 rounded-md ${recommendation === "Accepted" ? "bg-green-100" : "bg-red-100"}`}>
                 <div>
