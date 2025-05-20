@@ -14,7 +14,7 @@ function CandidateFeedbackDialog({ candidate }) {
   let parsedFeedback = {};
 
   try {
-    parsedFeedback = JSON.parse(candidate?.feedback || '{}'); // parsing just candidate.feedback
+    parsedFeedback = JSON.parse(candidate?.feedback || '{}'); 
   } catch (error) {
     console.error("Failed to parse feedback JSON:", error);
   }
