@@ -1,7 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
 import moment from 'moment';
-import { Button } from '@/components/ui/button';
+import CandidateFeedbackDialog from './CandidateFeedbackDialog';
 
 
 function CandidateList({ candidateList }) {
@@ -14,7 +13,7 @@ function CandidateList({ candidateList }) {
       <div key={index} className="p-5 flex items-center justify-between bg-green-100 rounded-lg">
 
         <div className="flex items-center gap-3">
-          <h2 className="bg-primary p-3 px-3.5 font-bold text-gray-500 rounded-full">
+          <h2 className="bg-primary p-3 px-3 font-bold text-gray-500 rounded-full">
             {candidate.name?.charAt(0).toUpperCase()}
           </h2>
           <div className="text-left">
@@ -25,9 +24,11 @@ function CandidateList({ candidateList }) {
           </div>
         </div>
 
-        <Button variant={"outline"} className={"text-primary"}>
-          View Report
-        </Button>
+        <div className={"flex gap-3 items-center"}>
+          <h2 className={"text-blue-500"}>6/10</h2>
+          <CandidateFeedbackDialog candidate={candidate} />
+        </div>
+
       </div>
     ))
   ) : (
