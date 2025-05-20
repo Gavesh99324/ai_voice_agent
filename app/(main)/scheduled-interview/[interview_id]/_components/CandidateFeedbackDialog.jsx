@@ -83,10 +83,32 @@ function CandidateFeedbackDialog({ candidate }) {
                 <p className="text-sm mt-2">{summary}</p>
               </div>
 
+
+            {/*
+            <div className={"flex items-center justify-between"}>
               <div className="mt-5">
                 <h2 className="font-bold">Recommendation</h2>
                 <p className="text-sm mt-2">{recommendation}</p>
               </div>
+              <Button></Button>
+            </div>
+            */}
+
+            <div className={`flex items-center justify-between p-5 gap-5 mt-5 rounded-md ${recommendation === "Accepted" ? "bg-green-100" : "bg-red-100"}`}>
+                <div>
+                  <h2 className={`font-bold ${recommendation === "Accepted" ? "text-green-600" : "text-red-600"}`}>
+                    Recommendation Message
+                  </h2>
+                  <p className={`text-sm mt-2 ${recommendation === "Accepted" ? "text-green-400" : "text-red-400"}`}>
+                    {recommendation}
+                  </p>
+                </div>
+
+                <Button className={` text-black bg-white border border-black ${recommendation === "Accepted" ? "bg-green-100" : "bg-red-100"}`}>
+                    Send Response
+                </Button>
+            </div>
+
             </div>
           </DialogDescription>
         </DialogHeader>
