@@ -37,6 +37,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.12.0",
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.2.9"
