@@ -4,7 +4,7 @@
  * Inspired by krishnaik06/mlproject prediction pipeline
  */
 
-import MLConfig from '../config/mlConfig.js';
+import { MLConfig } from '../config/mlConfig.js';
 import { 
   extractTextFeatures, 
   calculateWeightedScore, 

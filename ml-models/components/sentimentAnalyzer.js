@@ -4,7 +4,7 @@
  * Inspired by krishnaik06/mlproject component structure
  */
 
-import MLConfig from '../config/mlConfig.js';
+import { MLConfig } from '../config/mlConfig.js';
 import { extractTextFeatures, normalize, clip } from '../utils/mlUtils.js';
 
 export class SentimentAnalyzer {
