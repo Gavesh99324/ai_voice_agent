@@ -73,9 +73,9 @@ export class PerformancePredictor {
       ? textFeatures.wordCount / responses.length 
       : 0;
     const responseLengthScore = normalize(
-      clip(avgResponseLength, 0, 200), 
+      clip(avgResponseLength, 0, this.config.analysis.maxExpectedResponseLength), 
       0, 
-      200
+      this.config.analysis.maxExpectedResponseLength
     );
 
     // Calculate vocabulary score
@@ -118,7 +118,8 @@ export class PerformancePredictor {
     const lengths = responses.map(r => r.split(/\s+/).length);
     const avgLength = lengths.reduce((a, b) => a + b, 0) / lengths.length;
     const variance = lengths.reduce((sum, len) => sum + Math.pow(len - avgLength, 2), 0) / lengths.length;
-    const consistency = 1 / (1 + variance / 100); // Normalize variance
+    // Normalize variance using configured divisor to calculate consistency
+    const consistency = 1 / (1 + variance / this.config.analysis.consistencyVarianceDivisor);
 
     return clip(consistency, 0, 1);
   }

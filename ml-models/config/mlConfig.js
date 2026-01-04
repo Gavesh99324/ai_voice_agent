@@ -61,6 +61,8 @@ export const MLConfig = {
     minResponseLength: 10,
     maxResponseLength: 5000,
     languageComplexityEnabled: true,
+    maxExpectedResponseLength: 200, // Maximum expected words for normalization
+    consistencyVarianceDivisor: 100, // Normalization factor for response length variance
   },
 };
 

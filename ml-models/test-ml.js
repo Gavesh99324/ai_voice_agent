@@ -3,8 +3,8 @@
  * Run with: node ml-models/test-ml.js
  */
 
-const { SentimentAnalyzer } = require('./components/sentimentAnalyzer.js');
-const { PerformancePredictor } = require('./components/performancePredictor.js');
+import { SentimentAnalyzer } from './components/sentimentAnalyzer.js';
+import { PerformancePredictor } from './components/performancePredictor.js';
 
 console.log('=== Testing ML Models ===\n');
 

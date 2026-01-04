@@ -81,7 +81,7 @@ export class SentimentAnalyzer {
   normalizeSentimentScore(rawScore, wordCount) {
     // Normalize by word count to avoid bias toward longer texts
     const scorePerWord = wordCount > 0 ? rawScore / wordCount : 0;
-    // Scale to -1 to 1 range
+    // Scale to -1 to 1 range (multiplier of 10 provides good sensitivity for typical sentiment keyword density)
     return clip(scorePerWord * 10, -1, 1);
   }
 

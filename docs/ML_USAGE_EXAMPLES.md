@@ -231,8 +231,9 @@ console.log(normalized); // 0.75
 
 ## Future Enhancements
 
-- Add more sophisticated NLP features
-- Implement model training capabilities
+- Add more sophisticated NLP features (current models use rule-based analysis)
+- Implement actual ML model training capabilities (e.g., using TensorFlow.js)
 - Add support for multiple languages
-- Integrate with more advanced ML frameworks
+- Integrate with more advanced ML frameworks for deep learning
 - Add A/B testing for model improvements
+- Collect training data to build supervised learning models
